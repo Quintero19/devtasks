@@ -1,15 +1,13 @@
 const Task = require('../models/Task');
 const Project = require('../models/Project');
 
-// @desc    Generate tasks with AI
-// @route   POST /api/ai/generate-tasks
+
 const generateTasks = async (req, res) => {
   const { prompt, projectId } = req.body;
 
   if (!prompt) return res.status(400).json({ message: 'Prompt is required' });
 
   try {
-    // Call OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -56,11 +54,9 @@ Generate 5-8 practical, actionable tasks ordered logically.`
     const data = await response.json();
     const content = data.choices[0].message.content;
 
-    // Parse JSON response
     const cleanJSON = content.replace(/```json\n?|\n?```/g, '').trim();
     const aiResult = JSON.parse(cleanJSON);
 
-    // If projectId provided, save tasks to DB
     if (projectId) {
       const project = await Project.findOne({ _id: projectId, owner: req.user._id });
       if (!project) return res.status(404).json({ message: 'Project not found' });
