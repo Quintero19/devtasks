@@ -2,8 +2,7 @@ const User = require('../models/User');
 const Project = require('../models/Project');
 const Task = require('../models/Task');
 
-// @desc    Get all users
-// @route   GET /api/admin/users
+
 const getUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password').sort({ createdAt: -1 });
@@ -13,8 +12,6 @@ const getUsers = async (req, res) => {
   }
 };
 
-// @desc    Update user role
-// @route   PUT /api/admin/users/:id
 const updateUserRole = async (req, res) => {
   try {
     if (req.params.id === req.user._id.toString()) {
@@ -32,8 +29,7 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-// @desc    Delete user
-// @route   DELETE /api/admin/users/:id
+
 const deleteUser = async (req, res) => {
   try {
     if (req.params.id === req.user._id.toString()) {
@@ -47,8 +43,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// @desc    Get global metrics
-// @route   GET /api/admin/metrics
+
 const getMetrics = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
